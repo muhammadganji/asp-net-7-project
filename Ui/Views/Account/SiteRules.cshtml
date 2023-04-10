@@ -1,0 +1,116 @@
+﻿@{
+    ViewData["Title"] = "قوانین فروشگاه";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<Entities.Category>
+
+
+@*--------------menu---------------*@
+@section menuSection{
+
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@*logo site*@
+<div class="top2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-header">
+                            <h5>
+                                قوانین و ضوابط فروشگاه
+                            </h5>
+                        </div>
+                        <p class="card-text">
+                            <br />
+                            1. کلیه ضوابط و قوانین فروشگاه مطابق با قوانین جمهوری اسلامی ایران، قوانین تجارت الکترونیک و قانون حمایت از حقوق مصرف کننده است. در صورت هرگونه تغییر در ضوابط و قوانین فروشگاه متعاقبا تغییرات جدید در همین صفحه درج می‌گردد.
+                            <br />
+                            <br />
+                            2. اطلاعات کاربری مشتری نزد فروشگاه محفوظ است. مشتری نیز باید در حفظ محرمانگی اطلاعات حساب کاربری و رمز عبور خود کوشا باشد، مسئولیت کلیه فعالیت هایی که تحت حساب کاربری و رمز عبور وی انجام می‌گردد بر عهده مشتری است و فروشگاه هیچ نوع مسئولیتی را در این مورد نمی‌پذیرد.
+                            <br />
+                            <br />
+                            3. کلیه خبر رسانی ها و ایمیل‌‌‌‌های ارسالی از جانب فروشگاه تنها با شماره و پست الکترونیک مندرج در سایت بوده و هرگونه پیام تحت عنوان فروشگاه از طریق شماره پیامک و پست الکترونیک ناشناس، فاقد اعتبار بوده و فروشگاه هیچ نوع مسئولیتی را در این زمینه قبول نمی‌نماید.
+                            <br />
+
+                        </p>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> _signInManager
+@inject UserManager<AppUser> _userManager
+
+@*---------Search----------*@
+@section seachSection{
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            <div class="row">
+                                <form class="col-3" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                                    <input class="mybtn" type="submit" value="خروج" />
+                                </form>
+                                <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">پنل</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                            <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-o"></i>ورود</a>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    @*<form action="">
+                <input type="text" placeholder="کالای مورد نظر را جستجو کنید">
+                <button type="submit"><i class="fa fa-search"></i></button>
+                </form>*@
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    }

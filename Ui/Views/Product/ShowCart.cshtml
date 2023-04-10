@@ -1,0 +1,191 @@
+﻿@{
+    ViewData["Title"] = "سبد محصولات خرید ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model Ui.Models.ProductCartViewModel
+
+
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> _signInManager
+@inject UserManager<AppUser> _userManager
+@{
+    double sumProdut = 0;
+    foreach (var pr in @Model.Products)
+    {
+        sumProdut += pr.Price;
+    }
+
+    SettingXML setting = new SettingXML();
+}
+
+
+<div class="container div-cart">
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <h3 class="header-section">لیست سبد خرید</h3>
+            <div class="alert alert-warning" role="alert">
+                <h5>
+                    بسیار خب
+                </h5>
+                سبد خرید شما، تنها برای 
+                @setting.TimeExpiresForCookeis.ToString()
+                دقیقه نگه داشته می شود
+            </div>
+            @if (ViewBag.ErrorInfo == true)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <h6>
+                        لطفا مشخصات خود را کامل کنید
+                    </h6>
+                    برای صدور فاکتور و پرداخت سفارش، بایستی مشخصات خود را کامل نمایید.
+                    <br />
+                    <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">ورود به پنل</a>
+                </div>
+            }
+            <ul>
+
+                @foreach (var product in @Model.Products)
+                {
+                    <li>
+                        <div class="row shadow-sm" style="margin-bottom:12px;">
+                            <div class="col-md-2">
+                                <img src="~/img/Product/thumbnailimage/@product.ImageName"
+                                     class="img-fluid rounded"
+                                     alt="@product.Name تصویر" />
+                            </div>
+
+                            <div class="col-md-10">
+                                <div>
+                                    <h5>@product.Name <span class="badge badge-info">@product.Price تومان </span></h5>
+                                </div>
+                                <div>
+                                    <p>
+                                        @product.Description
+                                    </p>
+                                    @if (product.Stock < 10)
+                                    {
+                                        <span class="text-primary">@product.Stock عدد باقی مانده است</span>
+                                    }
+                                </div>
+                                <div class="form-group">
+                                    <a class="btn btn-sm btn-info" asp-action="ShowDetails" asp-controller="Product"
+                                   asp-area="" asp-route-id="@product.Id">مشاهده محصول</a>|
+                                    <a class="btn btn-sm btn-danger" asp-action="DeleteFromCart" asp-controller="Product" asp-area=""
+                                   asp-route-id="@product.Id">حذف از سبد</a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </li>
+                }
+            </ul>
+            <hr />
+            <div>
+                @if (_signInManager.IsSignedIn(User))
+                {
+                    <a class="btn btn-sm btn-success" asp-action="ShowInvoice" asp-controller="Product" asp-area="">تعیین تعداد و فاکتور نهایی</a>
+                }
+                else
+                {
+                    <p>
+                        برای پرداخت نهایی ابتدا وارد شوید. با احترام
+                    </p>
+                    <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                    <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn"><i class="fa fa-user-o"></i>ورود</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*---------Search----------*@
+@section seachSection{
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            <div class="row">
+                                <form class="col-3" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                                    <input class="mybtn" type="submit" value="خروج" />
+                                </form>
+                                <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">پنل</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                            <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-o"></i>ورود</a>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <form asp-action="Search" asp-controller="Home" asp-area="">
+                        <input name="keyword" type="text" placeholder="کالای مورد نظر را جستجو کنید">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*--------------menu---------------*@
+@section menuSection{
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*---------------Footer-----------------*@
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+
+
+@*---------------scripts-----------------*@
+@section Scripts{
+
+}
+
+

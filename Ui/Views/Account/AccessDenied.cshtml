@@ -1,0 +1,40 @@
+﻿@{
+    ViewData["Title"] = "دسترسی محدود";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            <!---------------------------------->
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+
+<div class="top2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="login">
+                    <a asp-action="Index" asp-controller="Home" class="mybtn"><i class="fas fa-home"></i>صفحه اصلی</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="flex-center position-ref full-height">
+    <div class="code">
+        Access Denied
+    </div>
+
+    <div class="message" style="padding: 10px;">
+        دسترسی محدود شده
+    </div>
+</div>

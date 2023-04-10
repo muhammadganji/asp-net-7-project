@@ -1,0 +1,50 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "ویرایش مسخصات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Entities.AppUser
+
+<partial name="_userpanel" />
+
+<div class="card bg-light mb-3">
+    <div class="card-header">ویرایش مشخصات کاربر</div>
+    <div class="card-body">
+        @*form for edit*@
+        <div class="row">
+            <div class="col-12">
+
+                <form asp-action="Edit" asp-area="user" asp-controller="UserProfile" method="post" enctype="multipart/form-data">
+                    <div class="form-group col-12">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" required class="form-control" value="@Model.FirstName" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" required class="form-control" value="@Model.LastName" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12">
+                        <label asp-for="Address" class="control-label"></label>
+                        <textarea maxlength="450" required asp-for="Address"
+                                  class="form-control" rows="2"
+                                  placeholder="استان، شهر، محله، خیابان، فرعی، کوچه، طبقه،کوچه، پلاک، طبقه، واحد"></textarea>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-12">
+                        <label asp-for="Zipcode" class="control-label"></label>
+                        <input asp-for="Zipcode" required class="form-control" value="@Model.Zipcode" />
+                        <span asp-validation-for="Zipcode" class="text-danger"></span>
+                    </div>
+                    <button class="btn btn-success btn-sm" type="submit">بروزرسانی  مشخصات</button> |
+                    <a asp-action="Index" asp-controller="UserProfile" asp-area="user">بازگشت</a>
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>

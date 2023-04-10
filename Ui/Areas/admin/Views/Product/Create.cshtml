@@ -1,0 +1,153 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@model Ui.Areas.admin.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "ثبت کالای جدید";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    @*@Html.Partial("_adminpanel")*@
+    <partial name="_adminpanel" />
+
+    <div class="col-md-9 div-cart">
+        <div class="div-cart-header">
+            <h5>
+                افزودن محصول جدید
+            </h5>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="product.Name" class="control-label"></label>
+                            <input asp-for="product.Name" class="form-control" />
+                            <span asp-validation-for="product.Name" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="@Model.category.Id" class="control-label"></label>
+                            @*<input type="hidden" for="listCategory" asp-for="IdCategory" class="form-control" />*@
+                            <select asp-for="@Model.product.CategoryId" class="form-control" id="listCategory">
+                                @foreach (var item in Model.Categories)
+                                {
+                                    <option value="@item.Id">@item.Name</option>
+                                }
+                            </select>
+                            @*<label asp-for="IdCategory" class="control-label"></label>
+                            <select asp-for="IdCategory" class="form-control" asp-items="ViewBag.IdCategory"></select>*@
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="@Model.product.Price" class="control-label"></label>
+                            <input asp-for="@Model.product.Price" class="form-control" />
+                            <span asp-validation-for="@Model.product.Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label asp-for="@Model.product.Description" class="control-label"></label>
+                        <input asp-for="@Model.product.Description" class="form-control" />
+                        <span asp-validation-for="@Model.product.Description" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label asp-for="@Model.product.Stock" class="control-label"></label>
+                            <input asp-for="@Model.product.Stock" class="form-control" />
+                            <span asp-validation-for="@Model.product.Stock" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label asp-for="@Model.product.MaxStock" class="control-label"></label>
+                            <input asp-for="@Model.product.MaxStock" class="form-control" />
+                            <span asp-validation-for="@Model.product.MaxStock" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @* <div class="form-group">
+                    <label asp-for="ImageName" class="control-label"></label>
+                    <input asp-for="ImageName" class="form-control" />
+                    <span asp-validation-for="ImageName" class="text-danger"></span>
+                    </div>*@
+
+                    <div class="row">
+
+                        <div class="form-group col-md-6">
+                            <label asp-for="@Model.product." class="control-label"></label>
+                            <div class="custom-file">
+                                <input asp-for="@Model.product.ImageFile" class="custom-file-input" id="customFile"
+                                       id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+                                <label class="custom-file-label" for="customFile" style="text-align:left;">انتخاب تصویر</label>
+                            </div>
+                            <span asp-validation-for="@Model.product.ImageFile" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <div class="preview">
+                                <img class="img-fluid rounded shadow" src="~/img/Product-Guid-image.gif" id="file-ip-1-preview">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <textarea asp-for="@Model.product.DescriptionSecond" id="DescriptionSecond" class="ckeditor" name="DescriptionSecond" rows="200" style="direction:rtl;"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="ایجاد" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div>
+            <a asp-action="Index">بازگشت به لیست</a>
+        </div>
+
+        @section Scripts {
+
+
+            <script type="text/javascript">
+                // Add the following code if you want the name of the file appear on select
+                $(".custom-file-input").on("change", function () {
+                    var fileName = $(this).val().split("\\").pop();
+                    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                });
+            </script>
+
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            }
+
+            <script>
+                // show preiview image before uploading
+                function showPreview(event) {
+                    if (event.target.files.length > 0) {
+                        var src = URL.createObjectURL(event.target.files[0]);
+                        var preview = document.getElementById("file-ip-1-preview");
+                        preview.src = src;
+                        preview.style.display = "block";
+                    }
+                    else {
+                        //
+                        preview.src = "~/img/Product-Guid-image.gif";
+                        preview.style.display = "block";
+                    }
+                }
+            </script>
+
+            <script>
+                $(document).ready(function () {
+                    CKEDITOR.replace('#DescriptionSecond');
+                });
+            </script>
+
+        }
+
+
+
+    </div>
+
+</div>

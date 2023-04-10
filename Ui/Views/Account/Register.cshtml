@@ -1,0 +1,128 @@
+﻿@{
+    ViewData["Title"] = "عضویت";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Models.RegisterViewModel
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            <!---------------------------------->
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+
+
+
+
+@*--------------menu---------------*@
+@section menuSection{
+
+
+    @*logo site*@
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="login">
+                        <a asp-action="Index" asp-controller="Home" asp-area="">
+                            <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<br />
+<form asp-controller="Account" asp-action="Register" autocomplete="off"
+      method="post" class="form-horizontal div-cart col-md-6 shadow" style="margin:auto;">
+
+    <div class="form-group">
+        <label asp-for="FirstName" class="col-md-12 col-sm-12 col-xl-12 control-label title-small"></label>
+        <div class="col-md-12 col-sm-12 col-xl-12">
+            <input autocomplete="off" asp-for="FirstName" class="form-control title-small" placeholder="نام" />
+            <span asp-validation-for="FirstName" class="title-small"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="LastName" class="col-md-12 col-sm-12 col-xl-12 control-label title-small"></label>
+        <div class="col-md-12 col-sm-12 col-xl-12">
+            <input autocomplete="off" asp-for="LastName" class="form-control title-small" placeholder="نام خانوادگی" />
+            <span asp-validation-for="LastName" class="title-small"></span>
+        </div>
+    </div>
+
+    <div class="">
+
+        <div class="form-group">
+            <label asp-for="UserName" class="col-md-12 col-sm-12 col-xl-12 control-label title-small"></label>
+            <div class="col-md-12 col-sm-12 col-xl-12">
+                <input id="UserName" autocomplete="off" asp-for="UserName" class="form-control title-small" placeholder="موبایل" />
+                <span asp-validation-for="UserName" class="title-small"></span>
+            </div>
+        </div>
+
+        <!--<div class="form-group row">-->
+        @*<a id="GetOTP" asp-action="GetRegisterOTP" asp-controller="Account" asp-area="" class="text-center">درخواست رمز تاییدیه </a>*@
+        <!--<div class="col-md-6 col-sm-6 col-xl-6">
+                <input autocomplete="off" asp-for="CodeOTP" class="form-control title-small" placeholder="کد تاییدیه" />
+                <span asp-validation-for="CodeOTP" class="title-small"></span>
+            </div>
+            <a id="GetOTP" class="text-center btn btn-sm btn-info col-5">درخواست رمز تاییدیه </a>
+        </div>-->
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-12 col-sm-12 col-xl-12 control-label title-small"></label>
+        <div class="col-md-12 col-sm-12 col-xl-12">
+            <input autocomplete="off" asp-for="Password" class="form-control title-small" />
+            <span asp-validation-for="Password" class="title-small"></span>
+        </div>
+    </div>
+    @*accep role of shop*@
+
+    <span class="title-bold" style="color:red">@ViewBag.error</span>
+    <br />
+    <hr />
+    <span>ثبت نام در فروشگاه، به منزله ی پذیرفتن قوانین می باشد.</span>
+    <a target="_blank" asp-action="SiteRules" asp-controller="Account" asp-area="">مشاهده قوانین سایت</a>
+    <hr />
+    <button type="submit" class="btn btn-success">ثبت نام </button>|
+    <a asp-controller="Account" asp-action="Login">ورود</a>
+
+
+</form>
+
+<br />
+

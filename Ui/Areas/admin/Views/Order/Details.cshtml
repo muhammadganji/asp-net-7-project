@@ -1,0 +1,180 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    ViewData["Title"] = "مشاهده لیست سفارش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Areas.admin.Models.ProductOrderPaidViewModel
+
+
+
+
+<div class="row">
+    <partial name="_adminpanel" />
+
+
+    <div class="col-md-9 div-cart">
+        <div class="div-cart-header">
+            مشاهده سفارش
+        </div>
+        <div>
+
+
+            <div>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>شماره فاکتور</th>
+                            <th>تاریخ پرداخت</th>
+                            <th>شماره ارجاع</th>
+                            <th>شماره پیگیری</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>@Model.orderPaid.Id</td>
+                            <td>@Model.orderPaid.DateTimeIR</td>
+                            <td>@Model.orderPaid.RetrievalReferenceNumber</td>
+                            <td>@Model.orderPaid.SystemTranceAuditNumber</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+            <div>
+                <table class="table table-sm">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="w-25">مشخصات مشتری</th>
+                            <th class="w-75"> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>نام </td>
+                            <td>
+                                @{  @Model.orderPaid.user.FirstName  @Model.orderPaid.user.LastName 
+                                }-- <mark><a class="text-info" href="tel:@Model.orderPaid.user.PhoneNumber">@Model.orderPaid.user.PhoneNumber</a></mark>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>آدرس</td>
+                            <td>@Model.orderPaid.user.Address  </td>
+                        </tr>
+                        <tr>
+                            <td>کد پستی</td>
+                            <td>@Model.orderPaid.user.Zipcode</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            <table class="table table-sm">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+
+                        </th>
+                        <th>
+                            @* @Html.DisplayNameFor(model => model.productOrderPaidLable.ImageName) *@
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.productOrderPaid.product.Name)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.productOrderPaid.product.Description)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.productOrderPaid.Quantity)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.productOrderPaid.Price)
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @{
+
+                        int i = 1;
+                        foreach (var item in Model.productOrderPaids)
+                        {
+
+
+                            <tr>
+                                <td>
+                                    @(i++)
+                                </td>
+                                <td>
+                                    <img class="rounded-circle" height="40" width="40" src="~/img/Product/thumbnailimage/@item.product.ImageName" />
+                                </td>
+                                <td>
+                                    <a asp-area="" asp-controller="Product" asp-action="showDetail" asp-route-id="@item.product.Id"
+                                   class="text-dark">@item.product.Name</a>
+                                    @* @Html.DisplayFor(modelItem => item.NameProduct) --> *@
+                                </td>
+                                <td>
+                                    <a asp-area="" asp-controller="Product" asp-action="showDetail" asp-route-id="@item.product.Id"
+                                   class="text-dark">@item.product.Description</a>
+                                    @* @Html.DisplayFor(modelItem => item.Descroption) *@
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Quantity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+
+                            </tr>
+
+                        }
+
+
+                    }
+                </tbody>
+            </table>
+
+
+            <hr />
+
+            @{
+                long total = 0;
+                long sum = 0;
+                foreach (var item in Model.productOrderPaids)
+                {
+                    sum = (long)item.Quantity * (long)item.Price;
+                    total = total + sum;
+                }
+
+                <span class="p-1 bg-dark text-white">
+                    جمع کل : @total تومان
+                </span>
+            }
+
+
+            <hr />
+
+            <div>
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index"
+                   class="btn btn-info">بازگشت</a>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+

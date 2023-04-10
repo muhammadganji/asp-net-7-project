@@ -1,0 +1,138 @@
+﻿@{
+    ViewData["Title"] = "مقالات کاربران";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Models.ArticleViewModel
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> _signInManager
+@inject UserManager<AppUser> _userManager
+
+@*--------------menu---------------*@
+@section menuSection{
+
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+<div class="row" style="margin-bottom: 50px;">
+
+    <div class="col-12 div-cart">
+
+        <div class="div-cart-header">
+            <h5>
+                مشاهده مقالات
+            </h5>
+        </div>
+
+        <div style="padding-top:50px">
+            <div>
+                @if (Model.Articles.Count == 0)
+                {
+                    <h3>
+                        مقالات جدید به زودی منتشر می شوند. ♥♥
+                    </h3>
+                }
+                else
+                {
+                    @foreach (var article in Model.Articles)
+                    {
+                        <div>
+                            <a asp-controller="Article" asp-action="SingleArticle" asp-route-id="@article.Id" asp-area="">
+                                <h5>
+                                    @article.Title
+                                </h5>
+                            </a> |
+                            <span>@article.DateTimeCreated</span>
+                        </div>
+                        <hr />
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*---------Search----------*@
+@section seachSection{
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            <div class="row">
+                                <form class="col-3" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                                    <input class="mybtn" type="submit" value="خروج" />
+                                </form>
+                                <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                                <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">پنل</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                            <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                            <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-o"></i>ورود</a>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <form asp-action="Search" asp-controller="Home" asp-area="">
+                        <input name="keyword" type="text" placeholder="کالای مورد نظر را جستجو کنید">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+@*---------------Footer-----------------*@
+@section footer{
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+

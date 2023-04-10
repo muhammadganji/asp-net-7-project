@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "تایید و پرداخت سفارش";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Models.PaymentGetwayViewModel
+
+<div class="top2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="login">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container div-cart">
+
+    @*---------Go to the Gatway----------*@
+    <div class="row div-cart-header">
+        <h5>
+            در حال انتقال به درگاه پرداخت
+        </h5>
+    </div>
+
+    <div class="row">
+        <p>
+            زمان: @Model.DateTime
+            <br />
+            مبلغ: @Model.Amount
+        </p>
+        <form asp-area="" asp-controller="Payment" asp-action="PaymentGatway" asp-route-id="@Model.Id">
+            <input type="hidden" asp-for="@Model.Id" class="form-control" />
+            <input type="submit" value="پرداخت سفارش" class="btn btn-success btn-lg" />
+
+        </form>
+    </div>
+
+</div>
+
+
+@*---------------Footer-----------------*@
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}

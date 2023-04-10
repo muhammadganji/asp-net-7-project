@@ -1,0 +1,262 @@
+﻿@{
+    ViewData["Title"] = "فاکتور خرید از فروشگاه";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Models.InvoiceViewModel
+
+
+
+@*----------------search-----------------*@
+@section seachSection{
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<AppUser> _signInManager
+    @inject UserManager<AppUser> _userManager
+
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            <div class="row">
+                                <form class="col-3" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                                    <input class="mybtn" type="submit" value="خروج" />
+                                </form>
+                                @*<a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>*@
+                                <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">پنل</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                            <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                            <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-o"></i>ورود</a>
+                        }
+
+
+                    </div>
+                </div>
+                @*<div class="col-md-3">
+            <form action="">
+            <input type="text" placeholder="کالای مورد نظر را جستجو کنید">
+            <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+            </div>*@
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*----------------write code here for invoice-------------*@
+@*----------------write code here for invoice-------------*@
+@*----------------write code here for invoice-------------*@
+@*----------------write code here for invoice-------------*@
+@*----------------write code here for invoice-------------*@
+@*----------------write code here for invoice-------------*@
+@if (Model.Products.Count == 0)
+{
+    <h3 class="div-cart shadow" style="margin-top:150px; margin-bottom:150px;text-align:center;">
+        فاکتوری برای نمایش /پرداخت وجود ندارد.
+    </h3>
+}
+else
+{
+    <div class="shadow p-3 div-cart">
+        <div class="row">
+            <div class="col-6 text-right"><h5>پیش فاکتور سفارش</h5></div>
+            <div class="col-6 text-left"><strong>تاریخ: </strong>@Model.DateTimeCreateIR</div>
+        </div>
+
+        @*------------------------------مشخصات فروشنده--------------------*@
+        @*------------------------------مشخصات فروشنده--------------------*@
+        @*------------------------------مشخصات فروشنده--------------------*@
+        <div>
+            <h6>@Model.CompanyInfo.FirstName</h6>
+            <p>
+                <strong>آدرس: </strong>
+                @Model.CompanyInfo.Address |
+                <strong>کد پستی: </strong>
+                @Model.CompanyInfo.Zipcode |
+                <strong>تماس: </strong>
+                @Model.CompanyInfo.PhoneNumber
+            </p>
+        </div>
+        <hr />
+        <div>
+            <h6>@Model.UserInfo.FirstName @Model.UserInfo.LastName</h6>
+            <p>
+                <strong>آدرس: </strong>
+                @Model.UserInfo.Address |
+                <strong>کد پستی: </strong>
+                @Model.UserInfo.Zipcode |
+                <strong>تماس: </strong>
+                @Model.UserInfo.PhoneNumber
+            </p>
+        </div>
+
+
+
+        <hr class="mb-5" />
+        @*------------------------------مشخصات خریدار--------------------*@
+
+        <!-- start -->
+
+        <br />
+        <div>
+            <div class="shopping-cart">
+                <div class="column-labels">
+                    <label class="product-image">تصویر</label>
+                    <label class="product-details">محصول</label>
+                    <label class="product-price">قیمت</label>
+                    <label class="product-quantity">تعداد</label>
+                    <label class="product-removal">حذف</label>
+                    <label class="product-line-price">جمع</label>
+                </div>
+
+                @foreach (var product in Model.Products)
+                {
+                    <div class="product">
+                        <input type="hidden" value="@product.Id" class="product-id" />
+                        <div class="product-image">
+                            @*<img src="~/img/Product/thumbnailimage/@product.Image">*@
+                            <img alt="تصویر @product.Name" src="~/img/Product/thumbnailimage/@product.ImageName">
+                        </div>
+                        <div class="product-details">
+                            <div class="product-title">@product.Name</div>
+
+                            @*<p class="product-description">@product.Description</p>*@
+                            <p class="text-danger">
+                                حداکثر سفارش مجاز: @product.MaxStock
+
+                                <span class="text-dark">
+                                    :::::
+                                </span>
+                                @{
+                                    if (product.MaxStock < 10)
+                                    {
+                                        <span class="text-primary">@product.MaxStock عدد باقی مانده است</span>
+                                    }
+                                }
+
+                            </p>
+                        </div>
+                        <input type="hidden" class="price" value="@product.Price">
+                        <div class="product-price">@product.Price</div>
+                        <div class="product-quantity">
+                            <input type="number" value="@product.Quantity"
+                                   min="1" max="@product.MaxStock"
+                                   class="quantity" onChange="textQuantitychange()">
+                        </div>
+                        <div class="product-removal">
+                            <a class="remove-product btn btn-sm btn-danger"
+                       asp-action="DeleteFromInvoice" asp-controller="Product" asp-area=""
+                       asp-route-id="@product.Id">حذف</a>
+                        </div>
+                        <div class="product-line-price">@product.Price</div>
+
+                    </div>
+                }
+
+
+                <div class="totals">
+                    <div class="totals-item">
+                        <label>جمع</label>
+                        @{
+                            ulong total = 0;
+                            foreach (var p in Model.Products)
+                            {
+                                total += p.Price;
+                            }
+                            <div class="totals-value result-total-price" id="cart-subtotal">
+                                @total
+                            </div>
+                        }
+                    </div>
+
+
+                    @*<div class="totals-item">
+                <label>مالیات و ارزش افزوده </label>
+                <div class="totals-value" id="cart-tax">@Model.CartTax</div>
+                </div>*@
+
+                    @*<div class="totals-item">
+                <label>هزینه حمل و نقل</label>
+                <div class="totals-value" id="cart-shipping">@Model.CartShipping</div>
+                </div>*@
+
+
+                    <div class="totals-item totals-item-total">
+                        <label>قابل پرداخت</label>
+                        @{
+                            
+                            <div class="totals-value result-total-price" id="cart-total">
+                                @total
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <button id="invoice-payment-save" class="checkout">پرداخت با درگاه بانکی</button>
+                <div id="editor"></div>
+                @*<button id="cmd">دانلود pdf فاکتور</button>*@
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- end -->
+}
+
+
+
+
+
+
+@*--------------menu---------------*@
+@section menuSection{
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*---------------Footer-----------------*@
+@section footer{
+
+    <partial name="_ContactUs" />
+
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+

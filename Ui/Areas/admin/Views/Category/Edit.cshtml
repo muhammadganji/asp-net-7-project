@@ -1,0 +1,99 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "ویرایش دسته بندی";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Entities.Category
+
+
+<div class="row">
+    <partial name="_adminpanel" />
+
+    <div class="col-md-9 div-cart">
+        <div class="div-cart-header">
+            <h5>
+                ویرایش گروه بندی
+            </h5>
+        </div>
+
+        <form asp-action="Edit" asp-controller="Category" asp-area="admin"
+              method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="FileName" />
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-6">
+                    <label asp-for="ImageFile" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="ImageFile" class="custom-file-input" id="customFile"
+                               id="file-ip-1" accept="image/*" onchange="showPreview(event);">
+                        <label class="custom-file-label" for="customFile" style="text-align:left;">انتخاب تصویر</label>
+                    </div>
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <div class="preview">
+                        <img class="img-fluid rounded shadow" src="~/img/Product/normalimage/@Model.FileName" id="file-ip-1-preview">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="بروز رسانی" class="btn btn-primary" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="Index" asp-controller="Category" asp-area="admin">بازگشت به لیست</a>
+        </div>
+    </div>
+
+
+
+    @section Scripts {
+        <script type="text/javascript">
+            // Add the following code if you want the name of the file appear on select
+            $(".custom-file-input").on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+            });
+        </script>
+
+        <script>
+            // show preiview image before uploading
+            function showPreview(event) {
+                if (event.target.files.length > 0) {
+                    var src = URL.createObjectURL(event.target.files[0]);
+                    var preview = document.getElementById("file-ip-1-preview");
+                    preview.src = src;
+                    preview.style.display = "block";
+                }
+                else {
+                    //
+                    preview.src = "~/img/Category-Guid-image.gif";
+                    preview.style.display = "block";
+                }
+            }
+        </script>
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+
+</div>
+

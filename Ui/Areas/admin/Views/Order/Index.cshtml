@@ -1,0 +1,117 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    ViewData["Title"] = "لیست سفارشات پرداخت شده";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<Entities.OrderPaid>
+
+
+
+
+<div class="row">
+    <partial name="_adminpanel" />
+
+
+    <div class="col-md-9 div-cart">
+
+        <div class="div-cart-header">
+
+            <div class="fs-2 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                </svg>
+                لیست سفارشات پرداخت شده
+            </div>
+        </div>
+
+
+
+        <div class="row">
+
+
+            <table class="table table-sm table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.DateTimeIR)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Amount)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.SystemTranceAuditNumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.user.FirstName)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DateTimeIR)
+                            </td>
+                            @*<td>
+                        @Html.DisplayFor(modelItem => item.Token)
+                        </td>*@
+                            @*<td>
+                        @Html.DisplayFor(modelItem => item.ResponseCode)
+                        </td>*@
+                            @*<td>
+                        @Html.DisplayFor(modelItem => item.RetrievalReferenceNumber)
+                        </td>*@
+                            <td>
+                                @{
+                                    string amountRial = item.Amount;
+                                    string amountToman = amountRial.Substring(0, amountRial.Length - 1);
+                                    <span>@amountToman</span>
+                                    @*@Html.DisplayFor(modelItem => item.Amount)*@
+                                }
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SystemTranceAuditNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserId)
+                            </td>
+                            <td>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">مشاهده </a>
+                                @*@{
+
+                            if (item.StateOrder == ((int)@StateOrder.State.Paid))
+                            {
+                            | <a asp-action="Approved" asp-route-id="item.IdOrderPaid" class="btn btn-sm btn-primary">آماده ی ارسال</a>
+                            }
+                            else if (item.StateOrder == ((int)(@StateOrder.State.Approved)))
+                            {
+                            | <a asp-action="Posted" asp-route-id="@item.IdOrderPaid" class="btn btn-sm btn-primary">تحویل پست </a>
+                            }
+                            else if (@item.StateOrder == ((int)@StateOrder.State.Posted))
+                            {
+                            <p>منتظر تایید دریافت مشتری</p>
+                            }
+                            else if (@item.StateOrder == ((int)@StateOrder.State.Delivered))
+                            {
+                            <p>سفارش با موفقیت کامل شد</p>
+                            }
+                            }*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+</div>
+
+
+

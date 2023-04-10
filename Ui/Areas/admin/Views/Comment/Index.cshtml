@@ -1,0 +1,52 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@model IEnumerable<Entities.Comment>
+
+@{
+    ViewData["Title"] = "نظرات";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+    <partial name="_adminpanel" />
+    <div class="col-md-9 div-cart">
+        <div class="div-cart-header">
+            <div class="fs-2 mb-3">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"></path>
+                </svg>
+                لیست نظرات
+            </div>
+        </div>
+
+        <div class="row">
+            @if (Model.Count() > 0)
+            {
+                @foreach (var comment in Model)
+                {
+                    @*@Html.Partial("_CommentAdmin",comment);*@
+                    <partial name="_CommentAdmin" for="@comment" />
+                }
+            }
+            else
+            {
+                <p>تاکنون نظری ثبت نشده</p>
+            }
+
+        </div>
+
+
+    </div>
+</div>
+
+
+@*---------------------Scripts JavaScript------------------*@
+@section Scripts{
+    <script>
+
+    </script>
+}
+
+

@@ -1,0 +1,40 @@
+﻿
+<div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-brand dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                پروفایل
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <a class="dropdown-item" asp-action="ChangePassword" asp-controller="UserProfile" asp-area="user">تغییر رمز </a>
+                <form class="dropdown-item" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                    <input type="submit" class="btn btn-light btn-block" value="خروج" />
+                </form>
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-action="Index" asp-controller="Home" asp-area="">صفحه اصلی فروشگاه <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="Index" asp-controller="UserProfile" asp-area="user">مشخصات </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="User" asp-controller="Order" asp-action="ShowOrderPaid">پیگیری خرید </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-area="User" asp-controller="Order" asp-action="Index">سوابق خرید </a>
+                </li>
+
+            </ul>
+
+        </div>
+    </nav>
+</div>

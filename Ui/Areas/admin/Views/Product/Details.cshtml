@@ -1,0 +1,243 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@model Ui.Areas.admin.Models.ProductViewModel
+
+@{
+    ViewData["Title"] = "مشاهده کالا";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row" style="margin-bottom:96px;">
+    <partial name="_adminpanel" />
+
+    <div class="col-md-9 div-cart">
+        <div class="div-cart-header">
+            <h5>
+                مشاهده محصول و افزودن ویژگی
+            </h5>
+        </div>
+
+        <div class="row shadow-sm" style="margin-bottom:12px;">
+            <div class="col-md-2">
+                <img src="~/img/Product/normalimage/@Model.product.ImageName"
+                     class="img-fluid rounded"
+                     alt="@Model.product.Name تصویر" />
+            </div>
+
+            <div class="col-md-10 mt-4">
+                <div>
+                    <h5>@Model.product.Name <span class="">@Model.product.category.Name</span> <abbr title="@Model.product.Description" class="initialism">@Model.product.Price</abbr></h5>
+                </div>
+                <div>
+                    <p>
+
+                        @Model.product.Description
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div>
+            <table class="table table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.feature.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.feature.Value)
+                        </th>
+                        <th>*</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Features.Count == 0)
+                    {
+
+
+                        <tr>
+                            <td colspan="3">
+                                ویژگی جدید اضافه نمایید
+                            </td>
+                        </tr>
+
+
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.Features)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Value)
+                                </td>
+                                <td>
+                                    @*<a asp-action="Edit" asp-route-id="@item.IdFeatures">ویرایش</a> |*@
+                                    @*<a asp-action="Details" asp-route-id="@item.IdFeatures">مشاهده</a> |*@
+                                    @*<a asp-action="DeleteFeature" asp-controller="Product" asp-route-id="@item.IdFeatures">حذف</a>*@
+                                    <form asp-action="DeleteFeature" asp-controller="Product" asp-area="admin" asp-route-id="@item.Id">
+                                        <input type="hidden" asp-for="@item.Id" />
+                                        <input type="hidden" name="productId" value="@Model.product.Id" />
+                                        <input type="submit" value="حذف" class="btn btn-danger btn-sm" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+
+            <form asp-action="CreateFeature" asp-controller="Product" asp-area="admin">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        <label asp-for="feature.Title" class="control-label"></label>
+                        <input asp-for="feature.Title" class="form-control" />
+                        <span asp-validation-for="feature.Title" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label asp-for="feature.Value" class="control-label"></label>
+                        <input asp-for="feature.Value" class="form-control" />
+                        <span asp-validation-for="feature.Value" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="hidden" name="feature.ProductId" value="@Model.product.Id" class="form-control" />
+                    <input type="submit" value="ثبت ویژگی" class="btn btn-primary" />
+                </div>
+
+            </form>
+
+
+        </div>
+        @* -------------Feature------------- *@
+
+        <div>
+            @*<a asp-action="Edit" asp-route-id="@Model.IdProduct">بروزرسانی</a> |*@
+            <a asp-action="Index">بازگشت به لیست</a>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+
+        /*-------------------برای ظاهر ویژگی ها---------------*/
+        //Clone the hidden element and shows it
+        $('.add-one').click(function () {
+            $('.dynamic-element').first().clone().appendTo('.dynamic-stuff').show();
+            attach_delete();
+        });
+
+        //Attach functionality to delete buttons
+        function attach_delete() {
+            $('.delete').off();
+            $('.delete').click(function () {
+                console.log("click");
+                $(this).closest('.form-group').remove();
+            });
+        }
+        /*--end-----------------برای ظاهر ویژگی ها*/
+
+
+        /*-------------------برای ارسال ویژگی ها---------------*/
+        // جمع آوری ویژگی هایی که توسط کاربر تایپ شده
+        function getFeature() {
+            var inputT = $(".tFeature");
+            var inputV = $(".vFeature");
+            var idProduct = $('#idOfProduct').val();
+            var data = [];
+
+            for (var i = 1; i < inputT.length; i++) {
+
+                data.push({
+                    'TitleFeature': $(inputT[i]).val(),
+                    'ValueFeature': $(inputV[i]).val(),
+                    'IdProduct': idProduct
+                });
+            }
+            return data;
+            //console.log(data);
+        }
+
+        // ارسال داده به سرور
+        async function postData(url = '', data) {
+            // Default options are marked with *
+            const response = await fetch(url, {
+                method: 'POST', // or 'PUT'
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        }
+
+        // دریافت داده از سرور
+        function getItems(url = '') {
+            fetch(url)//baseURL + action
+                .then(response => response.json())
+                .then(data => _displayItems(data))
+                .catch(error => console.error('Unable to get items.', error));
+        }
+
+        // ارسال ویژگی ها به سرور
+
+        $('#singlebutton').click(function () {
+            //debugger;
+            //const uri = '/api/Feature/PostFeatures';
+            //const baseURL = window.location.origin;
+            //var features = getFeature();
+            //var respons = postData(baseURL + uri, features);
+            //console.log(respons);
+
+            debugger;
+            const uri = '/api/Feature/PostFeatures';
+            const baseURL = window.location.origin;
+            var dataFeature = getFeature();
+            var features = JSON.stringify(dataFeature);
+
+            $.ajax({
+                contentType: "application/json",
+                dataType: 'json',
+                type: "POST",
+                url: (baseURL + uri),
+
+                data: features,
+                success: function (data) {
+                    console.log("output : " + JSON.stringify(data));
+                },
+                error: function (data) {
+                    console.log("error : " + JSON.stringify(data));
+                },
+            });
+
+        });
+            //function postFeatures() {
+            //    const uri = '/api/Feature/PostFeatures';
+            //    const baseURL = window.location.origin;
+            //    var data = getFeature();
+            //    var respons = postData(baseURL + uri, data);
+            //    console.log(respons);
+            //}
+
+
+
+
+        /*--end-----------------برای ارسال ویژگی ها*/
+
+    </script>
+
+}

@@ -1,0 +1,134 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "پنل کاربری";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Entities.AppUser
+
+<partial name="_userpanel" />
+
+@*--------------Alert user for complate information--------------- *@
+@if (Model.PhoneNumberConfirmed == false || Model.Address == null || Model.Zipcode == null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <h4 class="alert-heading">تکمیل مشخصات</h4>
+        @*title of message*@
+        <p>
+            <strong>
+                @Model.FirstName @Model.LastName
+            </strong>
+            عزیز، برای دریافت خدمات از فروشگاه، مشخصات خود را کامل نمایید.
+        </p>
+        <hr>
+        <p class="mb-0">
+            @*check phone number*@
+            @if (Model.PhoneNumberConfirmed == false)
+            {
+                <span>
+                    شماره تماس
+                    <strong>
+                        @Model.PhoneNumber
+                    </strong>
+                    هنوز تایید نشده
+                </span>
+            }
+            @*check address*@
+            @if (Model.Address == null)
+            {
+                <br />
+                <span>
+                    هنوز آدرسی ثبت نشده
+                </span>
+            }
+            @*check post code*@
+            @if (Model.Zipcode == null)
+            {
+                <br />
+                <span>
+                    هنوز کد پستی ثبت نشده
+                </span>
+            }
+
+        </p>
+        <hr>
+        @*button confirm phone number*@
+        @if (Model.PhoneNumberConfirmed == false)
+        {
+            <a asp-action="ConfirmPhoneNumber" asp-controller="UserProfile" asp-area="user">تایید شماره موبایل</a>
+        }
+        @*button complate information*@
+        @if (Model.Address == null || Model.Zipcode == null)
+        {
+            <a class="btn btn-outline-info" asp-action="Edit" asp-controller="UserProfile" asp-area="user">تکمیل مشخصات</a>
+        }
+    </div>
+
+}
+
+
+
+<div class="">
+    <div class="card bg-light mb-3">
+        <div class="card-header">مشخصات </div>
+        <div class="card-body">
+            <h5 class="card-title">@Model.FirstName @Model.LastName</h5>
+            <p class="card-text">
+                @*Adress*@
+                <span>
+                    آدرس:
+                </span>
+                @if (@Model.Address != null)
+                {
+                    <strong>
+                        @Model.Address
+                    </strong>
+
+                }
+                else
+                {
+                    <strong>
+                        هنوز آدرسی ثبت نشده
+                    </strong>
+                }
+
+                <br />
+                @*Post Code*@
+                <span>
+                    کد پستی:
+                </span>
+                @if (@Model.Zipcode != null)
+                {
+                    <strong>
+                        @Model.Zipcode
+                    </strong>
+                }
+                else
+                {
+                    <strong>
+                        هنوز کد پستی ثبت نشده
+                    </strong>
+                }
+
+                <br />
+                <hr />
+                @*phone number*@
+                <span>شماره تماس: </span><strong>@Model.PhoneNumber</strong>
+                @if (Model.PhoneNumberConfirmed)
+                {
+                    <span class="text-success">تایید شده</span>
+                }
+                else
+                {
+                    <span class="text-danger">تایید نشده</span>
+                    <br />
+                    <a asp-action="ConfirmPhoneNumber" asp-controller="UserProfile" asp-area="user">دریافت کد تاییدیه موبایل</a>
+                }
+            </p>
+            <hr />
+            <a class="btn btn-outline-info" asp-action="Edit" asp-controller="UserProfile" asp-area="user">ویرایش مشخصات</a>
+        </div>
+    </div>
+</div>
+

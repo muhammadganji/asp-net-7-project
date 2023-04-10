@@ -1,0 +1,96 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "تاییدیه شماره تماس";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Areas.user.Models.ConfirmPhoneNumberViewModel
+
+<partial name="_userpanel" />
+
+@*confirmed phone number*@
+@if (Model.PhoneNumberConfirmed == true)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="card-header">
+                        تاییدبه شماره تماس
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            شماره تماس
+                            <strong>
+                                @Model.PhoneNumber
+                            </strong>
+                            تایید شده است.
+                        </p>
+                        <br />
+
+                        <a class="btn btn-primary" asp-action="Index" asp-controller="UserProfile" asp-area="user">
+                            بازگشت به مشخصات
+                        </a>
+                        |
+                        <a class="" asp-action="Index" asp-controller="Home" asp-area="">
+                            صفحه اصلی فروشگاه
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            </div>
+        </div>
+    </div>
+}
+@*need to confirm mobile*@
+else
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="card-header">
+                        تاییدیه شماره تماس
+                    </div>
+                    <div class="card-body">
+                        <form asp-action="ConfirmPhoneNumber" asp-controller="UserProfile" asp-area="user" method="post" enctype="multipart/form-data">
+                            <input type="hidden" asp-for="PhoneNumber" />
+                            <p>
+                                شماره تماس
+                                <strong>
+                                    @Model.PhoneNumber
+                                </strong>
+                                هنوز تایید نشده، ابتدا درخواست کد را بدهید، سپس منتظر بمانید تا کد به شماره شما ارسال شده و آن را در کادر زیر وارد نمایید و دکمه ارسال را کلیک نمایید.
+
+                            </p>
+                            <br />
+                            <div class="form-group">
+                                <lable class="col-12" for="PhoneNumber">کد را اینجا وارد نمایید.</lable>
+                                <input asp-for="CodeOtp" placeholder="------"
+                                       class="form-control col-12" />
+                            </div>
+                            <div class="form-group mt-2">
+
+                                <a class="btn btn-sm btn-outline-dark" id="GetOTP">
+                                    درخواست کد اعتبار سنجی
+                                </a>
+                                |
+                                <input type="submit" class=" btn btn-success btn-sm col-2" value="ثبت کد" />
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
+            </div>
+        </div>
+    </div>
+}
+

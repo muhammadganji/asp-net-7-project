@@ -1,0 +1,50 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+@{
+    ViewData["Title"] = "ویرایش مقاله";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Entities.Article
+
+
+
+<div class="row">
+	<partial name="_adminpanel" />
+
+	<div class="col-md-9 div-cart">
+		<div class="div-cart-header">
+			<h5>
+				ویرایش مقاله
+			</h5>
+		</div>
+
+
+		<div>
+			<form asp-controller="Article" asp-action="Edit" method="post">
+				@Html.AntiForgeryToken()
+				<input asp-for="Id" type="hidden" />
+				<input asp-for="UserId" type="hidden" />
+				<div class="form-group col-md-12">
+					<input class="form-control" type="text" asp-for="Title" id="ArticleTitle" name="ArticleTitle" cols="70" placeholder="عنوان مقاله" />
+				</div>
+				<div class="col-md-12">
+
+					<textarea asp-for="Description" id="Description" class="ckeditor" name="Description" rows="200" style="direction:rtl;"></textarea>
+				</div>
+				<div style="padding-top:10px">
+					<button class="btn btn-outline-primary" type="submit" value="submit">ذخیره و انتشار</button> |
+					<a asp-action="Index" asp-controller="Article" asp-area="admin" class="btn btn-info">برگشت به لیست</a>
+				</div>
+			</form>
+		</div>
+
+
+		<script>
+			$(document).ready(function () {
+				CKEDITOR.replace('#Description');
+			});
+		</script>
+	</div>
+</div>
+

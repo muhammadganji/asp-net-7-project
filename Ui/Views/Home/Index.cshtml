@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "محصولات خورشیدی و روشنایی و باتری و پنل خورشیدی";
+}
+
+@model Ui.Models.HomeViewModel
+
+@*----------------search-----------------*@
+@section seachSection{
+    @using Microsoft.AspNetCore.Identity
+    @inject SignInManager<AppUser> _signInManager
+    @inject UserManager<AppUser> _userManager
+
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login">
+
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            <div class="row">
+                                <form class="col-3" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                                    <input class="mybtn" type="submit" value="خروج" />
+                                </form>
+                                <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                                <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">پنل</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                            <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                            <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-o"></i>ورود</a>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <form asp-action="Search" asp-controller="Home" asp-area="">
+                        <input name="keyword" type="text" placeholder="کالای مورد نظر را جستجو کنید">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*----------------Slider-----------------*@
+<partial name="_SliderHome" for="@Model.SliderProducts" />
+
+
+@*---------------last product-------------*@
+<div class="div-product">
+    <div>
+        <h3>
+            جدید ترین محصولات
+        </h3>
+    </div>
+    <div class="row">
+        @foreach (var product in Model.LastProducts)
+        {
+            <div class="col-12 col-sm-6 col-lg-4">
+                <div class="div-card">
+                    <div>
+                        <a asp-route-id="@product.Id" asp-action="ShowDetails" asp-controller="Product" asp-area="">
+                            <img src="~/img/Product/normalimage/@product.ImageName" class="img-fluid" />
+                        </a>
+                    </div>
+                    <div>
+                        <h3>
+                            <a class="title" asp-route-id="@product.Id" asp-action="ShowDetails" asp-controller="Product" asp-area="">
+                                @product.Name
+                            </a>
+                        </h3>
+                    </div>
+                    <div>
+                        <p>
+                            <a class="description" asp-route-id="@product.Id" asp-action="ShowDetails" asp-controller="Product" asp-area="">
+                                @product.Description
+                            </a>
+                        </p>
+                    </div>
+                    <div class="meta d-flex flex-row justify-content-between">
+                        @{
+                            if (product.Stock <= 0)
+                            {
+                                <span class="price badge badge-danger">
+                                    اتمام موجودی
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="price badge badge-success">
+                                    @product.Price تومان
+                                </span>
+                            }
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+
+
+@*--------------menu---------------*@
+@section menuSection{
+
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categorys)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@*---------------Footer-----------------*@
+@section footer{
+
+    <partial name="_ContactUs" />
+
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+
+

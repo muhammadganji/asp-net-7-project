@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "نتیجه ی پرداخت";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container div-cart">
+
+    @*---------Go to the Gatway----------*@
+    <div class="row div-cart-header">
+        <h5>
+            @ViewBag.response
+        </h5>
+
+    </div>
+
+    <div class="row">
+        <a asp-area="" asp-controller="Home" asp-action="Index" class="btn btn-info">بازگشت به فروشگاه</a>
+    </div>
+
+</div>
+
+
+
+@*---------------Footer-----------------*@
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}

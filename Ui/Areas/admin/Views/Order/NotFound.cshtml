@@ -1,0 +1,34 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
+
+@{
+    ViewData["Title"] = "صفحه مورد نظر یافت نشد";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="top2">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="login">
+                    <a asp-action="Index" asp-controller="Home" asp-area="" class="mybtn"><i class="fas fa-home"></i>صفحه اصلی</a>
+                </div>
+            </div>
+            <div class="col-md-6">
+            </div>
+        </div>
+    </div>
+</div>
+
+<br />
+
+<div class="flex-center position-ref full-height bg-white">
+    <div class="code">
+        404
+    </div>
+
+    <div class="message" style="padding: 10px;">
+        صفحه مورد نظر یافت نشد!
+    </div>
+</div>

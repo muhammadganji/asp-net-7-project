@@ -1,0 +1,459 @@
+﻿@{
+    ViewData["Title"] = "مشخصات و قیمت خرید " + @Model.Product.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@model Ui.Models.ProductViewModel
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+@inject SignInManager<AppUser> _signInManager
+@inject UserManager<AppUser> _userManager
+
+@{
+    // Get role with Database
+    var UserRole = User.FindFirstValue(ClaimTypes.Role);
+    @if (_signInManager.IsSignedIn(User) && UserRole == "admin")
+    {
+        <div class="container div-cart">
+            <a class="btn btn-sm btn-outline-info" asp-area="admin" asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Product.Id">
+                ویرایش در پنل ادمین
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z" />
+                </svg>
+            </a>
+
+            <a class="btn btn-sm btn-outline-success" asp-area="admin" asp-controller="Product" asp-action="Archive" asp-route-productId="@Model.Product.Id">
+                آرشیو تصاویر
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+                    <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"></path>
+                    <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"></path>
+                </svg>
+            </a>
+
+            <a class="btn btn-sm btn-outline-primary" asp-area="admin" asp-controller="Product" asp-action="Details" asp-route-productId="@Model.Product.Id">
+                ویژگی ها محصول
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z" />
+                </svg>
+            </a>
+
+        </div>
+    }
+
+}
+
+
+
+<div class="container div-cart">
+
+    @*---------product view----------*@
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-12">
+
+
+            @if (Model.Archives.Count != 0)
+            {
+                <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        @{
+                // for main image
+                            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+
+                            int numSlider = 1;
+                            @foreach (var item in Model.Archives)
+                            {
+                            // for archive image
+                                <li data-target="#carouselExampleIndicators" data-slide-to="@numSlider"></li>
+
+                                numSlider = numSlider + 1;
+
+                            }
+                        }
+
+                    </ol>
+                    <div class="carousel-inner">
+
+                        @{
+                            // main image
+                            <div class="carousel-item active">
+                                <img class="img-fluid d-block w-100" src="~/img/Product/normalimage/@Model.Product.ImageName" alt="@Model.Product.Name">
+                            </div>
+
+                            // archive image
+                            @foreach (var item in Model.Archives)
+                            {
+
+                                <div class="carousel-item">
+                                    <img class="img-fluid d-block w-100" src="~/img/Product/normalimage/@item.ImageName" alt="@Model.Product.Name">
+                                </div>
+                            }
+                        }
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
+            }
+            else
+            {
+                // main image
+                <img class="img-fluid" src="~/img/Product/normalimage/@Model.Product.ImageName" />
+            }
+
+
+
+
+
+
+
+
+
+
+        </div>
+
+        <div class="col-lg-8 col-md-8 col-sm-12">
+            <div class="product-head">
+
+                <h3 class="text-right">@Model.Product.Name</h3>
+                <p class="text-right">@Model.Product.Description</p>
+                <p class="product-group">
+                    <span>نام دسته بندی: </span>
+                    @{
+                        string nameCategory = Model.Categories.Where(c => c.Id == Model.Product.CategoryId).FirstOrDefault().Name;
+                        <a asp-action="ShowCategories" asp-controller="Product" asp-area="" asp-route-id="@Model.Product.CategoryId">@nameCategory</a>
+                    }
+                </p>
+            </div>
+            <div class="hr-dashed"> </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 tiny-feature">
+                    <ul>
+                        @{
+                            int count_To_Break = 0;
+                            @foreach (var feature in Model.Features)
+                            {
+                                if ((count_To_Break++) == 3)
+                                    break;
+                                <li>@feature.Title : @feature.Value</li>
+                            }
+                        }
+                    </ul>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-12">
+                    @{
+                        if (Model.Product.Stock <= 0)
+                        {
+                            <button class="btn btn-danger col-12">اتمام موجودی</button>
+                        }
+                        else
+                        {
+
+                            @if (Model.Product.Stock < 10)
+                            {
+                                <span class="text-primary">@Model.Product.Stock عدد باقی مانده است</span>
+                            }
+
+                            <div class="price-tag">
+                                @Model.Product.Price  تومان
+                            </div>
+
+                            <form class="AddToCart" enctype="multipart/form-data">
+                                <div class="box-add-to-cart row">
+                                    @*<input type="number" id="quantity" class="input-text col-3"
+                            step="1" min="1" max="" name="quantity" value="1" title="تعداد" size="4" placeholder="
+                            " inputmode="numeric">*@
+                                    <button type="submit" class="btn btn-success col-12 btn-AddToCart">افزودن به سبد خرید</button>
+                                </div>
+                            </form>
+                        }
+                    }
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+    @*---------Features----------*@
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <h3 class="header-section">مشخصات فنی محصول </h3>
+            @if (@Model.Features != null)
+            {
+                @foreach (var feature in @Model.Features)
+                {
+                    <p class="bg-light row feature"><span class="col-6">@feature.Title:</span>@feature.Value</p>
+                }
+            }
+            else
+            {
+                <div class="div-cart shadow" style="margin:auto;">بدون مشخصات فنی</div>
+            }
+        </div>
+    </div>
+
+
+    @*---------Description Second----------*@
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <h3 class="header-section">توضیحات تکمیلی </h3>
+            <div style="padding-left:20px;padding-right:20px; padding-bottom:20px;">@Html.Raw(@Model.Product.DescriptionSecond)</div>
+        </div>
+    </div>
+
+
+
+
+
+    @*---------Same product----------*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="one-slider">
+                <h3 class="header-section">محصولات مشابه</h3>
+                <h6><a asp-action="ShowCategories" asp-controller="Product" asp-area="" asp-route-id="@Model.Product.CategoryId">همه ی محصولات @nameCategory <span class="badge badge-secondary">@Model.SameProducts.Count</span></a></h6>
+                <div class="owl-carousel owl-theme ov1">
+                    @foreach (var product in @Model.SameProducts)
+                    {
+                        <div class="item">
+                            <figure>
+                                <a asp-action="ShowDetails" asp-controller="Product" asp-area="" asp-route-id="@product.Id"><img src="~/img/Product/thumbnailimage/@product.ImageName" class="w-100" /></a>
+                            </figure>
+                            <h5>@product.Name</h5>
+                            <span>@product.Price تومان</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    @*---------comment----------*@
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 div-cart">
+            <h3 class="header-section">نظرات</h3>
+            @if (ViewBag.AddNewComment != null)
+            {
+                <p><span class="badge-info"> بعداز تایید نمایش داده خواهد شد</span> @ViewBag.Lastcomment</p>
+            }
+            @if (Model.Comments.Count > 0)
+            {
+                <dl>
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <dt class="comment-name">
+                            @comment.FullName (@comment.TimeStampIR):
+                        </dt>
+                        <dd>
+                            <p class="comment-text">@comment.TextComment </p>
+                            @if (comment.ReplyComment != null && comment.ReplyComment != string.Empty)
+                            {
+                                <p class="comment-reply"><span class="badge badge-info">پاسخ: </span>@comment.ReplyComment</p>
+                            }
+                        </dd>
+                    }
+
+                </dl>
+            }
+            else
+            {
+                //<div>
+                //    اولین نفر باشید که نظر می دهید.
+                //</div>
+            }
+            <hr />
+
+            @if (_signInManager.IsSignedIn(User))
+            {
+                if (ViewBag.HasWrittenComment == false)
+                {
+                    <form asp-action="saveComment" asp-controller="Product" asp-area="" asp-route-id="@Model.Product.Id"
+                          method="post" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="textComment">نظرت اینجا بنویس</label>
+                                <textarea id="TextComment" name="TextComment" type="text" class="form-control" row="2" placeholder="نوشتن نظر" maxlength="450"></textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-submit-comment">ثبت نظر</button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <p>شما قبلا نظر خود را ثبت کرده اید.</p>
+                }
+
+            }
+            else
+            {
+                <div>
+                    برای نظردهی وارد شوید
+                    <br />
+                    <a asp-action="Register" asp-controller="Account" asp-area="" class="btn btn-info btn-sm"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                    <a asp-action="Login" asp-controller="Account" asp-area="" class="btn btn-info btn-sm"><i class="fa fa-user-o"></i>ورود</a>
+                </div>
+            }
+
+
+
+
+        </div>
+    </div>
+
+
+
+</div>
+
+
+
+@*---------Search----------*@
+@section seachSection{
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="login">
+                        @if (_signInManager.IsSignedIn(User))
+                        {
+                            <div class="row">
+                                <form class="col-3" asp-action="Logout" asp-controller="Account" asp-area="" method="post">
+                                    <input class="mybtn" type="submit" value="خروج" />
+                                </form>
+                                <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                                <a class="mybtn col-3" asp-action="GoToPanel" asp-controller="Account" asp-area="">پنل</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <a asp-action="ShowCart" asp-controller="Product" asp-area="" class="mybtn col-3"><span id="cartCount" class="">@ViewBag.countItem</span><i class="fa fa-cart-arrow-down"></i>سبد</a>
+                            <a asp-action="Register" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-plus"></i>ثبت نام</a>
+                            <a asp-action="Login" asp-controller="Account" asp-area="" class="mybtn col-3"><i class="fa fa-user-o"></i>ورود</a>
+                        }
+
+
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <form asp-action="Search" asp-controller="Home" asp-area="">
+                        <input name="keyword" type="text" placeholder="کالای مورد نظر را جستجو کنید">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" asp-area="">
+                        <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+@*--------------menu---------------*@
+@section menuSection{
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+        }
+
+
+
+
+@*---------------Footer-----------------*@
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+
+
+
+
+@*---------------scripts-----------------*@
+@section Scripts{
+    <script>
+
+        
+        var check_Added = false;
+        $('.btn-AddToCart').on("click", function (e) {
+            e.preventDefault();
+            debugger; // add in update .net 7
+            if (check_Added) {
+                $('.btn-AddToCart').text("در لیست شما موجود هست");
+                return null;
+            }
+            var post_data = @Model.Product.Id;
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("AddToCart","Product")',
+                data: { 'id': post_data },
+
+                success: function (msg) {
+                    if (msg.statue === 'success') {
+                        $('.btn-AddToCart').text("اضافه شد به لیست");
+                        debugger;
+                        
+                        $("#cartCount").text(msg.basket_count)
+                        check_Added = true;
+                    }
+                    else if (msg.statue === 'fail') {
+
+                        $("#cartCount").text(msg.basket_count)
+                    }
+                    else if (msg.statue === "exist") {
+                        $('.btn-AddToCart').text("در لیست شما موجود هست");
+                        
+                        $("#cartCount").text(msg.basket_count)
+                        check_Added = true;
+                    }
+                }
+            });
+        });
+    </script>
+}

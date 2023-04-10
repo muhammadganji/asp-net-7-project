@@ -1,0 +1,111 @@
+﻿@{
+    ViewData["Title"] = "ورود";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model Ui.Models.LoginViewModel
+@section footer{
+    <partial name="_ContactUs" />
+    <footer class="footer ">
+        <div class="container">
+            <!---------------------------------->
+            &copy; 1401 - طراحی و پشتیبانی توسط پرشین مهر
+        </div>
+    </footer>
+}
+
+
+
+
+
+@*--------------menu---------------*@
+@section menuSection{
+
+    @*لوگوی بالا*@
+    <div class="top2">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="login">
+                        <a asp-action="Index" asp-controller="Home" asp-area="">
+                            <img src="~/img/Brand-Home.png" class="img-fluid" style="height:32px;" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="main-menu">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>
+                            <a asp-action="Index" asp-controller="Home" asp-area=""
+                               style={color:#28a745 !important; font-weight: 900;}>صفحه اصلی</a>
+                        </li>
+                        @foreach (var item in Model.Categories)
+                        {
+                            <li>
+                                <a asp-action="ShowCategories" asp-controller="Product" asp-area=""
+                           asp-route-id="@item.Id">@item.Name</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+<br />
+<form asp-controller="Account" asp-action="Login" asp-area=""
+      method="post" class="form-horizontal div-cart col-md-6 shadow" style="margin:auto;">
+    <p>@Html.ValidationSummary()</p>
+    <input type="hidden" name="ReturnUrl" value="@ViewBag.ReturnUrl" />
+    <div class="form-group">
+        <label asp-for="UserName" class="col-md-12 control-label title-small"></label>
+        <div class="col-md-12">
+            <input asp-for="UserName" class="form-control title-small" />
+            <span asp-validation-for="UserName"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Password" class="col-md-12 control-label title-small"></label>
+        <div class="col-md-12">
+            <input asp-for="Password" class="form-control title-small" />
+            <span asp-validation-for="Password"></span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-12">
+            <div class="checkbox">
+                <label asp-for="RememberMe" class="title-small">
+                    <input asp-for="RememberMe" type="checkbox" class="form-control-file" />
+                    @Html.DisplayNameFor(m => m.RememberMe)
+                </label>
+            </div>
+        </div>
+    </div>
+
+
+    <br />
+    <input type="submit" value="ورود" class="btn btn-success" />|
+    <a asp-controller="Account" asp-action="Register">عضویت</a>
+    @{
+        if (ViewBag.ForgotPassword == true)
+        {
+            <a class="link-danger" asp-controller="Account" asp-action="ForgotPassword" asp-area=""> برای بازیابی رمز خود کلیک نمایید </a>
+        }
+    }
+
+</form>
+<br />

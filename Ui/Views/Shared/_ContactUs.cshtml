@@ -1,0 +1,70 @@
+﻿@{
+    SettingXML info = new SettingXML();
+
+    <div class="container-fluid" style="margin-bottom:45px;">
+
+        <div class="container">
+            <h3>
+                راه ارتباطی با فروشگاه
+                <span> <a class="btn btn-dark btn-sm" asp-action="Articles" asp-controller="Article" asp-area="">مقالات</a></span>
+
+            </h3>
+
+            <div class="row div-cart shadow">
+                <div class="container div-cart">
+                    <div class="row">
+                        <div class="col-md-5">
+                            <div class="news-form">
+                                <h5>اصالت فروشگاه</h5>
+                            </div>
+
+                            <div class="footer-description">
+                                <ul>
+                                    <li><i class="fa fa-truck"></i>تحویل پستی سریع</li>
+                                    <li><i class="fa fa-plane"></i>ارسال با پست پیشتاز و سفارشی</li>
+                                    <li><i class="fa fa-cart-arrow-down"></i>خرید آسان و راحت</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="news-form">
+                                <h5>مجوزهای فروشگاه</h5>
+                            </div>
+                            <div class="footer-description2">
+                                <ul>
+
+                                    <li>
+                                        <a referrerpolicy="origin" target="_blank" href="https://trustseal.enamad.ir/?id=250376&amp;Code=BqY6LKdVVREpNlrKLQLG"><img referrerpolicy="origin" src="https://Trustseal.eNamad.ir/logo.aspx?id=250376&amp;Code=BqY6LKdVVREpNlrKLQLG" alt="" style="cursor:pointer" id="BqY6LKdVVREpNlrKLQLG"></a> |
+                                        <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="news-form">
+                                <h5>آدرس و شماره</h5>
+                                <div class="footer-description2">
+                                    <ul>
+                                        <li><a class="badge-info" href="tel:@info.Phone"> @info.Phone </a></li>
+                                        <li>@info.Address</li>
+                                        <li>کدپستی : @info.Zipcode</li>
+                                        @if (info.Instagram != string.Empty)
+                                        {
+                                            <li><a class="badge-info" href="@info.Instagram"> اینستاگرام </a></li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+}

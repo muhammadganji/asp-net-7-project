@@ -1,0 +1,47 @@
+﻿@model Entities.Comment
+
+
+<div class="div-cart col-12 shadow-sm">
+    <form id="formComment" asp-controller="Comment" asp-action="SetReply" asp-area="admin" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <h6>
+                @Model.FullName
+                @if (Model.IsChecked == true)
+                {
+                    <span class="text-success"> -- تایید شده </span>
+                }
+            </h6>
+
+            <br />
+            <p>@Model.TextComment <span class="badge-light"> @Model.TimeStampIR </span></p>
+        </div>
+
+        <div class="form-group">
+            <textarea placeholder="نوشتن پاسخ" class="form-control form-control-sm text-info" asp-for="ReplyComment" rows="2"
+                      style="border-width: 0px 1px 0px 0px;">@if (Model.ReplyComment != string.Empty)
+                {
+                    @Model.ReplyComment
+                }</textarea>
+        </div>
+
+
+        <input type="hidden" asp-for="Id" />
+
+        @if (Model.IsChecked == true)
+        {
+            <button type="submit" class="btn btn-success btn-sm pr-3 pl-3">ثبت پاسخ</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary btn-sm pr-3 pl-3">تایید و نمایش</button>
+        }
+
+        @*<a asp-controller="Comment" asp-action="Decline" asp-area="admin" asp-route-id="@comment.IdComment"
+        class="btn btn-sm btn-outline-warning pr-5 pl-5">رد</a>*@
+        <a asp-controller="Comment" asp-action="Remove" asp-route-id="@Model.Id" asp-area="admin"
+           class="btn btn-sm btn-outline-danger pr-3 pl-3 ml-3 mr-3">حذف</a>
+        <a target="_blank" asp-controller="Product" asp-area="" asp-action="ShowDetails"
+           asp-route-id="@Model.ProductId"
+           class="text-primary mr-3 ml-3">مشاهده محصول</a>
+    </form>
+</div>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DocumentElement>
+
+	<BaseAddress >
+		<amoot>**********************</amoot>
+
+
+
+		<payment>************</payment>
+		<token>*************</token>
+		<verify>***********</verify>
+		<inquery>********************</inquery>
+
+	</BaseAddress>
+
+
+
+	<Amoot>
+		<UserName>*********</UserName>
+		<Password>***********</Password>
+		<PatternCodeIDOTP>*********</PatternCodeIDOTP>
+		<PatternCodeAlarmAdmin>********</PatternCodeAlarmAdmin>
+	</Amoot>
+	
+	
+
+
+
+
+	<Company>
+		<Name>نام فروشگاه</Name>
+		<Address>
+			آدرس
+		</Address>
+		<Zipcode>**********</Zipcode>
+		<Phone>021********</Phone>
+		<Instagram>********</Instagram>
+		<PhoneAlarmAdmin>********</PhoneAlarmAdmin>
+		<PhoneAlarmBackup>********</PhoneAlarmBackup>
+		<TimeExpiresForCookeis>**</TimeExpiresForCookeis>
+	</Company>
+
+
+
+
+
+	<IPGData>
+		<TreminalId>*******</TreminalId>
+		<AcceptorId>*******</AcceptorId>
+		<PassPhrase>*******</PassPhrase>
+		<URL>************</URL>
+	
+		<RSAPublicKey>
+			***********
+		</RSAPublicKey>
+		<CmsPreservationId></CmsPreservationId>
+	</IPGData>
+
+</DocumentElement>
