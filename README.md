@@ -21,6 +21,9 @@
       <a href="#setting">setting</a>   
     </li>
     <li>
+      <a href="#configuration">configuration</a>   
+    </li>
+    <li>
       <a href="#about-me">about me</a>
     </li>
   </ol>
@@ -82,8 +85,72 @@ builder.Services.AddIdentity<AppUser, AppRole>()
 product: _product
 ```
 
+
+
+* seed data: <br/>
+در هر موجودیت یک کانفیگ اختصاصی نوشته می شود که میتوان عملیات افزودن داده های اولیه را به عهده آن سپرد
+
+```c#
+public class ProductConfig : IEntityTypeConfiguration<Product>
+    {
+  
+      public void Configure(EntityTypeBuilder<Product> builder)
+       {
+        // First Implement for seed data
+            builder.HasData(
+                new Product
+                {
+                    Id = 1,
+                    Name = "محصول اپیلاسیوم",
+                    Description = "توضیح اپیلاسیوم",
+                    ImageName = "Product-Guid-image.gif",
+                    Price = 15000,
+                    Stock = 2,
+                    CategoryId = 1
+                }
+            );
+       }
+
+    }
+```
+
+
 * نکته:
 این ورژن از نرم افزار دیگر نیازی به طراحی `seed data` و اجرای `Database.Migrate` نداشته و به صورت تنظیماتی مقدار دهی اولیه می شود، بدین منظور از لایه ی دسترسی به دیتابیس  `config` به طور مرتب نوشته شده اند.
+
+
+
+## configuration
+تنظیمات مربوط موجودیت های سیستم در کانفیگ های جداگانه نگارش شده.
+لیست کانفیگ در لایه ی دیتابیس `DAL/Config` :
+* AppRoleConfig.cs
+* AppUserConfig.cs
+* ProductConfig.cs
+* ...
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    // this is for error ::: 
+    base.OnModelCreating(modelBuilder);
+
+    modelBuilder.ApplyConfiguration(new AppRoleConfig());
+    modelBuilder.ApplyConfiguration(new AppUserConfig());
+    modelBuilder.ApplyConfiguration(new UserRoleConfig());
+    modelBuilder.ApplyConfiguration(new ArticleConfig());
+    modelBuilder.ApplyConfiguration(new CategoryConfig());
+    modelBuilder.ApplyConfiguration(new ProductConfig());
+    modelBuilder.ApplyConfiguration(new ProductOrderConfig());
+    modelBuilder.ApplyConfiguration(new ProductOrderPaidConfig());
+    modelBuilder.ApplyConfiguration(new FeatureConfig());
+    modelBuilder.ApplyConfiguration(new OrderConfig());
+    modelBuilder.ApplyConfiguration(new OrderPaidConfig());
+    modelBuilder.ApplyConfiguration(new ArchiveConfig());
+    modelBuilder.ApplyConfiguration(new CommentConfig());
+}
+```
+
+
 
 
 ![تصویر](README/img/2.panel.PNG) <br/> *پنل مدیریتی*
